@@ -97,4 +97,8 @@ public class Grid {
     public void printShips() {
         printBoard(PrintType.SHIPS);
     }
+
+    public void addShip(Ship ship) {
+        grid[ship.getRow()][ship.getCol()].setShip(true);
+    }
 }
