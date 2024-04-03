@@ -5,43 +5,44 @@ public class Grid {
     public static final int NUM_COLS = 10;
 
     public Grid() {
+        this.grid = new Location[NUM_ROWS][NUM_COLS];
         for (int i = 0; i < NUM_ROWS; i++) {
             for (int j = 0; j < NUM_COLS; j++) {
-                grid[i][j] = new Location();
+                this.grid[i][j] = new Location();
             }
         }
     }
 
     public void markHit(int row, int col) {
-        grid[row][col].markHit();
+        this.grid[row][col].markHit();
     }
 
     public void markMiss(int row, int col) {
-        grid[row][col].markMiss();
+        this.grid[row][col].markMiss();
     }
 
     public void setStatus(int row, int col, Location.Status status) {
-        grid[row][col].setStatus(status);
+        this.grid[row][col].setStatus(status);
     }
 
     public Location.Status getStatus(int row, int col) {
-        return grid[row][col].getStatus();
+        return this.grid[row][col].getStatus();
     }
 
     public boolean alreadyGuessed(int row, int col) {
-        return !grid[row][col].isUnguessed();
+        return !this.grid[row][col].isUnguessed();
     }
 
     public void setShip(int row, int col, boolean val) {
-        grid[row][col].setShip(val);
+        this.grid[row][col].setShip(val);
     }
 
     public boolean hasShip(int row, int col) {
-        return grid[row][col].hasShip();
+        return this.grid[row][col].hasShip();
     }
 
     public Location get(int row, int col) {
-        return grid[row][col];
+        return this.grid[row][col];
     }
 
     public int numRows() {
@@ -64,7 +65,7 @@ public class Grid {
         }
         System.out.println();
         for (int row = 0; row < NUM_ROWS; row++) {
-            System.out.print('A' + row);
+            System.out.print((char) (row + 65));
             for (int col = 0; col < NUM_COLS; col++) {
                 System.out.print(" ");
                 switch (type) {
@@ -99,6 +100,12 @@ public class Grid {
     }
 
     public void addShip(Ship ship) {
-        grid[ship.getRow()][ship.getCol()].setShip(true);
+        for (int i = 0; i < ship.getLength(); i++) {
+            if (ship.getDirection() == Ship.Direction.HORIZONTAL) {
+                this.grid[ship.getRow()][ship.getCol() + i].setShip(true);
+            } else if (ship.getDirection() == Ship.Direction.VERTICAL) {
+                this.grid[ship.getRow() + i][ship.getCol()].setShip(true);
+            }
+        }
     }
 }

@@ -14,6 +14,13 @@ public class Ship {
         this.length = length;
     }
 
+    public Ship(int row, int col, int length, Direction direction) {
+        this.row = row;
+        this.col = col;
+        this.length = length;
+        this.direction = direction;
+    }
+
     public boolean isLocationSet() {
         return this.row > -1 && this.col > -1;
     }
@@ -56,7 +63,8 @@ public class Ship {
     }
 
     public String toString() {
-        return "Ship with length " + this.length + " at " + this.locationToString() + " with direction " + this.directionToString();
+        return "Ship with length " + this.length + " at " + this.locationToString() + " with direction "
+                + this.directionToString();
     }
 
 }
