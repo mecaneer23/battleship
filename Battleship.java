@@ -1,21 +1,47 @@
 import java.util.Scanner;
 
 public class Battleship {
+    public static final int[] SHIP_LENGTHS = { 2, 3, 3, 4, 5 };
+    public static int TOTAL_LENGTH;
+
+    private static void setTotalLength() {
+        int sum = 0;
+        for (int length : SHIP_LENGTHS) {
+            sum += length;
+        }
+        TOTAL_LENGTH = sum;
+    }
+
     public static void main(String[] args) {
-        Player user = new Player();
-        Player computer = new Player();
+        setTotalLength();
+        Grid player = new Grid();
+        Grid computer = new Grid();
         System.out.println("======================");
         System.out.println("Welcome to Battleship!");
         System.out.println("======================");
 
-        placeUserShips(user);
+        placeUserShips(player);
         placeComputerShips(computer);
+
+        int playerHits = 0, computerHits = 0;
+        while (playerHits < TOTAL_LENGTH && computerHits < TOTAL_LENGTH) {
+            System.out.println("Total hits: " + playerHits + "/" + TOTAL_LENGTH);
+            if (playerGuess(computer)) {
+                playerHits++;
+            }
+            if (computerGuess(player)) {
+                computerHits++;
+            }
+        }
+        System.out.println("You win!");
+        System.out.println("Thanks for playing.");
     }
 
-    private static void placeUserShips(Player user) {
+    private static void placeUserShips(Grid player) {
+        // TODO: add input validation
         System.out.println("Choose the location for your ships...");
         System.out.print("Your ships are the following lengths: { ");
-        for (int len : Player.SHIP_LENGTHS) {
+        for (int len : SHIP_LENGTHS) {
             System.out.print(len + " ");
         }
         System.out.println("}");
@@ -23,9 +49,9 @@ public class Battleship {
         int row, col;
         Ship.Direction direction;
 
-        for (int len : Player.SHIP_LENGTHS) {
+        for (int len : SHIP_LENGTHS) {
             System.out.println("Your current grid:");
-            user.printMyShips();
+            player.printShips();
             System.out.println("\nPlace a ship with a length of " + len);
             System.out.print("Which row? (A-J): ");
             row = (int) scan.nextLine().charAt(0) - 65;
@@ -44,16 +70,44 @@ public class Battleship {
                     direction = Ship.Direction.UNSET;
                     break;
             }
-            user.addShip(new Ship(row, col, len, direction));
+            player.addShip(new Ship(row, col, len, direction));
         }
+        System.out.println("Your current grid:");
+        player.printShips();
         scan.close();
     }
 
-    private static void placeComputerShips(Player computer) {
-        throw new Exception("Not implemented");
+    private static void placeComputerShips(Grid computer) {
+        System.out.println("placing computer ships is not yet implemented");
     }
 
-    private static void askForGuess(Player user, Player computer) {
+    /**
+     * Min is exclusive, max is inclusive.
+     */
+    private static int random(int min, int max) {
+        return (int) (Math.random() * (max - min)) + min;
+    }
+
+    private static boolean computerGuess(Grid player) {
+        int row = random(1, 10);
+        int col = random(1, 10);
+        boolean output;
+        if (player.hasShip(row, col)) {
+            System.out.println("Computer hit.");
+            player.markHit(row, col);
+            output = true;
+        } else {
+            System.out.println("Computer missed.");
+            player.markMiss(row, col);
+            output = false;
+        }
+        player.printStatus();
+        return output;
+    }
+
+    private static boolean playerGuess(Grid computer) {
+        System.out.println("You have guessed the following:");
+        computer.printStatus();
         Scanner scan = new Scanner(System.in);
         int row, col;
         while (true) {
@@ -73,6 +127,17 @@ public class Battleship {
             scan.close();
             break;
         }
-        
+        boolean output;
+        if (computer.hasShip(row, col)) {
+            System.out.println("Nice! You got a hit!");
+            computer.markHit(row, col);
+            output = true;
+        } else {
+            System.out.println("Nope, that was a miss.");
+            computer.markMiss(row, col);
+            output = false;
+        }
+        computer.printStatus();
+        return output;
     }
 }
