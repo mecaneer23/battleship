@@ -45,7 +45,7 @@ public class Battleship {
     }
 
     private static void placeUserShips(Grid player) {
-        // TODO: add input validation/ask again for invalid input and allow lowercase input
+        // TODO: Validate placed ships are fully on the grid and are not overlapping any other ship
         System.out.println("Choose the location for your ships...");
         System.out.print("Your ships are the following lengths: { ");
         for (int len : SHIP_LENGTHS) {
@@ -54,27 +54,54 @@ public class Battleship {
         System.out.println("}");
         int row, col;
         Ship.Direction direction;
+        char raw_row;
 
         for (int len : SHIP_LENGTHS) {
             System.out.println("Your current grid:");
             player.printShips();
             System.out.println("\nPlace a ship with a length of " + len);
-            System.out.print("Which row? (A-J): ");
-            row = (int) scan.nextLine().charAt(0) - 65;
-            System.out.print("Which column? (1-10): ");
-            col = scan.nextInt() - 1;
-            scan.nextLine();
-            System.out.print("Horizontal or vertical? (h/v): ");
-            switch (scan.nextLine()) {
-                case "h":
-                    direction = Ship.Direction.HORIZONTAL;
+            while (true) {
+                System.out.print("Which row? (A-J): ");
+                raw_row = scan.nextLine().charAt(0);
+                if (raw_row >= 'A' && raw_row <= 'J') {
+                    row = (int) raw_row - 65;
                     break;
-                case "v":
-                    direction = Ship.Direction.VERTICAL;
+                } else if (raw_row >= 'a' && raw_row <= 'j') {
+                    row = (int) raw_row - 97;
                     break;
-                default:
-                    direction = Ship.Direction.UNSET;
+                } else {
+                    System.out.println("That's not a vaild row... try again");
+                    continue;
+                }
+            }
+
+            while (true) {
+                System.out.print("Which column? (1-10): ");
+                col = scan.nextInt() - 1;
+                scan.nextLine();
+                if (col >= 0 && col < 10) {
                     break;
+                }
+                System.out.println("That's not a vaild column... try again");
+                continue;
+            }
+
+            while (true) {
+                System.out.print("Horizontal or vertical? (h/v): ");
+                switch (scan.nextLine()) {
+                    case "h":
+                    case "H":
+                        direction = Ship.Direction.HORIZONTAL;
+                        break;
+                    case "V":
+                    case "v":
+                        direction = Ship.Direction.VERTICAL;
+                        break;
+                    default:
+                        System.out.println("That's not a valid direction... try again");
+                        continue;
+                }
+                break;
             }
             player.addShip(new Ship(row, col, len, direction));
         }
