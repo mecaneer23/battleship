@@ -3,6 +3,7 @@ import java.util.Scanner;
 public class Battleship {
     public static final int[] SHIP_LENGTHS = { 2, 3, 3, 4, 5 };
     public static int TOTAL_LENGTH;
+    private static Scanner scan = new Scanner(System.in);
 
     private static void setTotalLength() {
         int sum = 0;
@@ -25,16 +26,22 @@ public class Battleship {
 
         int playerHits = 0, computerHits = 0;
         while (playerHits < TOTAL_LENGTH && computerHits < TOTAL_LENGTH) {
-            System.out.println("Total hits: " + playerHits + "/" + TOTAL_LENGTH);
             if (playerGuess(computer)) {
                 playerHits++;
             }
+            System.out.print("Press enter for the computer to guess...");
+            scan.nextLine();
             if (computerGuess(player)) {
                 computerHits++;
             }
+            System.out.println("Your total hits: " + playerHits + "/" + TOTAL_LENGTH);
+            System.out.println("Computer's total hits: " + computerHits + "/" + TOTAL_LENGTH);
+            System.out.print("Press enter to guess...");
+            scan.nextLine();
         }
         System.out.println("You win!");
         System.out.println("Thanks for playing.");
+        scan.close();
     }
 
     private static void placeUserShips(Grid player) {
@@ -45,7 +52,6 @@ public class Battleship {
             System.out.print(len + " ");
         }
         System.out.println("}");
-        Scanner scan = new Scanner(System.in);
         int row, col;
         Ship.Direction direction;
 
@@ -74,7 +80,6 @@ public class Battleship {
         }
         System.out.println("Your current grid:");
         player.printShips();
-        scan.close();
     }
 
     private static void placeComputerShips(Grid computer) {
@@ -101,6 +106,7 @@ public class Battleship {
             player.markMiss(row, col);
             output = false;
         }
+        System.out.println("Here are the computer's current guesses:");
         player.printStatus();
         return output;
     }
@@ -108,23 +114,22 @@ public class Battleship {
     private static boolean playerGuess(Grid computer) {
         System.out.println("You have guessed the following:");
         computer.printStatus();
-        Scanner scan = new Scanner(System.in);
         int row, col;
         while (true) {
-            System.out.print("Please enter your guess:\nRow: ");
+            System.out.println("Please enter your guess:");
+            System.out.print("Which row? (A-J): ");
             row = (int) scan.nextLine().charAt(0) - 65;
             if (row < 0 || row > 10) {
                 System.out.println("Invalid row: make sure you input a letter between A and J");
                 continue;
             }
-            System.out.print("Column: ");
-            col = scan.nextInt();
+            System.out.print("Which column? (1-10): ");
+            col = scan.nextInt() - 1;
             scan.nextLine();
-            if (col < 1 || col > 10) {
+            if (col < 0 || col > 10) {
                 System.out.println("Invalid column: make sure you input a number between 0 and 10");
                 continue;
             }
-            scan.close();
             break;
         }
         boolean output;
@@ -137,6 +142,9 @@ public class Battleship {
             computer.markMiss(row, col);
             output = false;
         }
+        System.out.print("Press enter to view your guesses...");
+        scan.nextLine();
+        System.out.println("Here are your current guesses:");
         computer.printStatus();
         return output;
     }
