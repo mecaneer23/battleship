@@ -45,7 +45,7 @@ public class Battleship {
     }
 
     private static void placeUserShips(Grid player) {
-        // TODO: add input validation
+        // TODO: add input validation/ask again for invalid input and allow lowercase input
         System.out.println("Choose the location for your ships...");
         System.out.print("Your ships are the following lengths: { ");
         for (int len : SHIP_LENGTHS) {
@@ -130,6 +130,7 @@ public class Battleship {
         int row = random(0, 10);
         int col = random(0, 10);
         boolean output;
+        System.out.format("Computer guessed (%c, %d)\n", (char) (row + 65), col + 1);
         if (player.hasShip(row, col)) {
             System.out.println("Computer hit.");
             player.markHit(row, col);
@@ -139,6 +140,8 @@ public class Battleship {
             player.markMiss(row, col);
             output = false;
         }
+        System.out.print("Press enter to view the computer's guesses...");
+        scan.nextLine();
         System.out.println("Here are the computer's current guesses:");
         player.printStatus();
         return output;
