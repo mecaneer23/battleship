@@ -33,10 +33,6 @@ public class Grid {
         return !this.grid[row][col].isUnguessed();
     }
 
-    public void setShip(int row, int col, boolean val) {
-        this.grid[row][col].setShip(val);
-    }
-
     public boolean hasShip(int row, int col) {
         return this.grid[row][col].hasShip();
     }
