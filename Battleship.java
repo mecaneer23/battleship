@@ -104,12 +104,12 @@ public class Battleship {
             while (true) {
                 if (random(0, 2) == 0) {
                     direction = Ship.Direction.HORIZONTAL;
-                    row = random(0, 10);
-                    col = random(0, 10 - len);
+                    row = random(0, Grid.NUM_ROWS);
+                    col = random(0, Grid.NUM_COLS - len);
                 } else {
                     direction = Ship.Direction.VERTICAL;
-                    row = random(0, 10 - len);
-                    col = random(0, 10);
+                    row = random(0, Grid.NUM_ROWS - len);
+                    col = random(0, Grid.NUM_COLS);
                 }
                 if (isValidShipLocation(computer, row, col, len, direction)) {
                     break;
@@ -127,8 +127,8 @@ public class Battleship {
     }
 
     private static boolean computerGuess(Grid player) {
-        int row = random(0, 10);
-        int col = random(0, 10);
+        int row = random(0, Grid.NUM_ROWS);
+        int col = random(0, Grid.NUM_COLS);
         boolean output;
         System.out.format("Computer guessed (%c, %d)\n", (char) (row + 65), col + 1);
         if (player.hasShip(row, col)) {
@@ -156,14 +156,14 @@ public class Battleship {
             System.out.print("Which row? (A-J): ");
             // TODO: allow for lowercase letters
             row = (int) scan.nextLine().charAt(0) - 65;
-            if (row < 0 || row > 10) {
+            if (row < 0 || row > Grid.NUM_ROWS) {
                 System.out.println("Invalid row: make sure you input a letter between A and J");
                 continue;
             }
             System.out.print("Which column? (1-10): ");
             col = scan.nextInt() - 1;
             scan.nextLine();
-            if (col < 0 || col > 10) {
+            if (col < 0 || col > Grid.NUM_COLS) {
                 System.out.println("Invalid column: make sure you input a number between 0 and 10");
                 continue;
             }

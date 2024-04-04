@@ -21,32 +21,12 @@ public class Grid {
         this.grid[row][col].markMiss();
     }
 
-    public void setStatus(int row, int col, Location.Status status) {
-        this.grid[row][col].setStatus(status);
-    }
-
     public Location.Status getStatus(int row, int col) {
         return this.grid[row][col].getStatus();
     }
 
-    public boolean alreadyGuessed(int row, int col) {
-        return !this.grid[row][col].isUnguessed();
-    }
-
     public boolean hasShip(int row, int col) {
         return this.grid[row][col].hasShip();
-    }
-
-    public Location get(int row, int col) {
-        return this.grid[row][col];
-    }
-
-    public int numRows() {
-        return NUM_ROWS;
-    }
-
-    public int numCols() {
-        return NUM_COLS;
     }
 
     enum PrintType {
