@@ -154,6 +154,7 @@ public class Battleship {
         while (true) {
             System.out.println("Please enter your guess:");
             System.out.print("Which row? (A-J): ");
+            // TODO: allow for lowercase letters
             row = (int) scan.nextLine().charAt(0) - 65;
             if (row < 0 || row > 10) {
                 System.out.println("Invalid row: make sure you input a letter between A and J");
