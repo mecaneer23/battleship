@@ -10,28 +10,11 @@ public class Ship {
     private int length;
     private Direction direction;
 
-    public Ship(int length) {
-        this.length = length;
-    }
-
     public Ship(int row, int col, int length, Direction direction) {
         this.row = row;
         this.col = col;
         this.length = length;
         this.direction = direction;
-    }
-
-    public boolean isLocationSet() {
-        return this.row > -1 && this.col > -1;
-    }
-
-    public boolean isDirectionSet() {
-        return this.direction != Direction.UNSET;
-    }
-
-    public void setLocation(int row, int col) {
-        this.row = row;
-        this.col = col;
     }
 
     public int getRow() {
@@ -46,25 +29,7 @@ public class Ship {
         return this.length;
     }
 
-    public void setDirection(Direction direction) {
-        this.direction = direction;
-    }
-
     public Direction getDirection() {
         return this.direction;
     }
-
-    private String directionToString() {
-        return this.direction.toString();
-    }
-
-    private String locationToString() {
-        return "(" + this.row + ", " + this.col + ")";
-    }
-
-    public String toString() {
-        return "Ship with length " + this.length + " at " + this.locationToString() + " with direction "
-                + this.directionToString();
-    }
-
 }
