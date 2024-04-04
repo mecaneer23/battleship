@@ -82,8 +82,41 @@ public class Battleship {
         player.printShips();
     }
 
+    private static boolean isValidShipLocation(Grid grid, int row, int col, int len, Ship.Direction direction) {
+        for (int i = 0; i < len; i++) {
+            if (
+                (direction == Ship.Direction.HORIZONTAL && grid.hasShip(row, col + i))
+                || (direction == Ship.Direction.VERTICAL && grid.hasShip(row + i, col))
+            ) {
+                return false;
+            }
+        }
+        return true;
+    }
+
     private static void placeComputerShips(Grid computer) {
-        System.out.println("placing computer ships is not yet implemented");
+        System.out.println("Computer is placing their ships...");
+
+        int row, col;
+        Ship.Direction direction;
+
+        for (int len : SHIP_LENGTHS) {
+            while (true) {
+                if (random(0, 2) == 0) {
+                    direction = Ship.Direction.HORIZONTAL;
+                    row = random(0, 10);
+                    col = random(0, 10 - len);
+                } else {
+                    direction = Ship.Direction.VERTICAL;
+                    row = random(0, 10 - len);
+                    col = random(0, 10);
+                }
+                if (isValidShipLocation(computer, row, col, len, direction)) {
+                    break;
+                }
+            }
+            computer.addShip(new Ship(row, col, len, direction));
+        }
     }
 
     /**
@@ -94,8 +127,8 @@ public class Battleship {
     }
 
     private static boolean computerGuess(Grid player) {
-        int row = random(1, 10);
-        int col = random(1, 10);
+        int row = random(0, 10);
+        int col = random(0, 10);
         boolean output;
         if (player.hasShip(row, col)) {
             System.out.println("Computer hit.");
