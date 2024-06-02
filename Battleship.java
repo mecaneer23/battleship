@@ -69,10 +69,9 @@ public class Battleship {
                 } else if (raw_row >= 'a' && raw_row <= 'j') {
                     row = (int) raw_row - 97;
                     break;
-                } else {
-                    System.out.println("That's not a vaild row... try again");
-                    continue;
                 }
+                System.out.println("That's not a vaild row... try again");
+                continue;
             }
 
             while (true) {
